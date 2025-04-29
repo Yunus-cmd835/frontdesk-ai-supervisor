@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Supervisor Dashboard</title>
+</head>
+<body>
+    <h1>Supervisor Dashboard</h1>
+
+    <h2>Pending Help Requests</h2>
+    <ul>
+        {% for req in pending_requests %}
+            <li>
+                <strong>{{ req[1] }}</strong>: {{ req[2] }}
+                <form method="post" action="/submit_answer">
+                    <input type="hidden" name="request_id" value="{{ req[0] }}">
+                    <input type="text" name="answer" placeholder="Enter answer" required>
+                    <button type="submit">Submit Answer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>History (Resolved / Unresolved)</h2>
+    <ul>
+        {% for hist in history %}
+            <li>
+                {{ hist[1] }} - {{ hist[2] }} [{{ hist[3] }}] — Answer: {{ hist[4] }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
