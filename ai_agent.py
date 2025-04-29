@@ -36,5 +36,5 @@ def simulate_call(customer_name, customer_question):
             print(f"❌ Error submitting request: {e}")
 
 if __name__ == "__main__":
-    simulate_call("John Doe", "Do you provide bridal makeup?")
     simulate_call("Jane Smith", "What are your working hours?")
+    simulate_call("John Doe", "Do you offer threading services?")

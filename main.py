@@ -47,15 +47,16 @@ def supervisor_ui(request: Request):
 def submit_answer(request_id: int = Form(...), answer: str = Form(...)):
     conn = create_connection()
     cursor = conn.cursor()
+    
     # Get the question first
     cursor.execute('SELECT question FROM help_requests WHERE id = ?', (request_id,))
     row = cursor.fetchone()
     if not row:
         conn.close()
         raise HTTPException(status_code=404, detail="Request not found")
-    
+
     question = row[0]
-    
+
     # Update DB
     cursor.execute('''
         UPDATE help_requests
@@ -65,11 +66,14 @@ def submit_answer(request_id: int = Form(...), answer: str = Form(...)):
     conn.commit()
     conn.close()
 
-    # ✅ Update local knowledge base
+    # ✅ Update local knowledge base safely
     kb_file = "knowledge_base.json"
     if os.path.exists(kb_file):
-        with open(kb_file, "r") as f:
-            kb = json.load(f)
+        try:
+            with open(kb_file, "r") as f:
+                kb = json.load(f)
+        except json.JSONDecodeError:
+            kb = {}
     else:
         kb = {}
 

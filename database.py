@@ -21,3 +21,10 @@ def create_table():
 
 # Call create_table() once when starting
 create_table()
+
+def clear_help_requests():
+    conn = create_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM help_requests')
+    conn.commit()
+    conn.close()
